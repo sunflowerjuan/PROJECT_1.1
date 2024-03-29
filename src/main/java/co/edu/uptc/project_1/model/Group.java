@@ -12,5 +12,5 @@ import lombok.Setter;
 public class Group {
     private String subjectId;
     private String placeId;
-    private String schedule;
+    private String[] Schedule;
 }
