@@ -39,9 +39,13 @@ public class SubjectService {
         return subjects;
     }
 
-    public void deleteSubject(Subject subject) throws ProjectExeption {
+    public void deleteSubject(String id) throws ProjectExeption {
         try {
-            fileManager.deleteLine(convertToString(subject));
+            Subject deleteSubject = getSubject(id);
+            if (deleteSubject == null) {
+                throw new ProjectExeption(TypeMessage.NOT_FOUND);
+            }
+            fileManager.deleteLine(convertToString(deleteSubject));
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
         }
@@ -49,11 +53,10 @@ public class SubjectService {
 
     public void modifySubject(String id, Subject newSubject) throws ProjectExeption {
         try {
-            Subject oldSubject = getSubject(id);
-            if (oldSubject == null) {
-                throw new ProjectExeption(TypeMessage.NOT_SAVED);
+            if (!newSubject.getId().equals(id)) {
+                throw new ProjectExeption(TypeMessage.NOT_FOUND);
             }
-            deleteSubject(oldSubject);
+            deleteSubject(id);
             add(newSubject);
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
