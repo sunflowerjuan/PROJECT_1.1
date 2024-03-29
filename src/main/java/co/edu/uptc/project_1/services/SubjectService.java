@@ -15,7 +15,8 @@ public class SubjectService {
 
     public void add(Subject subject) throws ProjectExeption {
         try {
-            fileManager.writeFile(convertToString(subject));
+            FileManager write = new FileManager(path);
+            write.writeFile(convertToString(subject));
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
         }
@@ -52,10 +53,10 @@ public class SubjectService {
     }
 
     public void modifySubject(String id, Subject newSubject) throws ProjectExeption {
+        if (!newSubject.getId().equals(id)) {
+            throw new ProjectExeption(TypeMessage.NOT_FOUND);
+        }
         try {
-            if (!newSubject.getId().equals(id)) {
-                throw new ProjectExeption(TypeMessage.NOT_FOUND);
-            }
             deleteSubject(id);
             add(newSubject);
         } catch (Exception e) {
@@ -83,7 +84,6 @@ public class SubjectService {
     }
 
     public String convertToString(Subject subject) {
-        return subject.getId() + "," +
-                subject.getName();
+        return subject.getId() + "," + subject.getName();
     }
 }
