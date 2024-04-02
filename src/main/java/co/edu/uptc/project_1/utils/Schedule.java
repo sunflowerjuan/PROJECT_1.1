@@ -15,4 +15,13 @@ public class Schedule {
     private LocalTime starHour;
     private int duration;
 
+    public boolean overlapsWith(Schedule otherSchedule) {
+        if (!this.day.equals(otherSchedule.getDay())) {
+            return false;
+        }
+        LocalTime endHour = this.starHour.plusMinutes(this.duration);
+        LocalTime otherEndHour = otherSchedule.getStarHour().plusMinutes(otherSchedule.getDuration());
+        return this.starHour.isBefore(otherEndHour) && endHour.isAfter(otherSchedule.getStarHour());
+    }
+
 }

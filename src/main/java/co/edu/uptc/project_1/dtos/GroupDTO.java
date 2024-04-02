@@ -10,16 +10,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GroupDTO {
+    private final String id;
     private final String subjectId;
     private final String placeId;
     private final Schedule[] schedule;
 
     public static GroupDTO convertToGroup(Group group) {
-        return new GroupDTO(group.getSubjectId(), group.getPlaceId(), group.getSchedule());
+        return new GroupDTO(group.getId(), group.getSubjectId(), group.getPlaceId(), group.getSchedule());
     }
 
     public static Group convertToDto(GroupDTO groupDTO) {
 
-        return new Group(groupDTO.getSubjectId(), groupDTO.getPlaceId(), groupDTO.getSchedule());
+        return new Group(groupDTO.getId(), groupDTO.getSubjectId(), groupDTO.getPlaceId(), groupDTO.getSchedule());
     }
 }

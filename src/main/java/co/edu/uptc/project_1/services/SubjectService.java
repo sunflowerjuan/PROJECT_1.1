@@ -15,7 +15,7 @@ public class SubjectService {
         try {
             subjectList.add(subject);
         } catch (Exception e) {
-            throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
 
     }
@@ -32,7 +32,7 @@ public class SubjectService {
             }
             subjectList.remove(deleteSubject);
         } catch (Exception e) {
-            throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
     }
 
@@ -44,7 +44,7 @@ public class SubjectService {
             deleteSubject(id);
             add(newSubject);
         } catch (Exception e) {
-            throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
     }
 
@@ -57,7 +57,7 @@ public class SubjectService {
             }
 
         } catch (Exception e) {
-            throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
         return null;
     }
