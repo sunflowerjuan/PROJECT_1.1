@@ -49,9 +49,17 @@ public class SubjectController {
         }
     }
 
-    @GetMapping("/h")
-    public String getService() {
-        return this.toString();
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Object> getSubject(@PathVariable String id) {
+
+        try {
+            Subject subject = service.getSubject(id);
+            return ResponseEntity.status(HttpStatus.OK).body(subject);
+        } catch (ProjectExeption e) {
+            return ResponseEntity.status(e.getMenssage().getCodeHttp())
+                    .body(e.getMenssage());
+        }
+
     }
 
     @PostMapping()

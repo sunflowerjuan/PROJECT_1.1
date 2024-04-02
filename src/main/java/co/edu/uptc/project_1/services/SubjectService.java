@@ -58,7 +58,7 @@ public class SubjectService {
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
-        return null;
+        throw new ProjectExeption(TypeMessage.NOT_FOUND);
     }
 
     public int getIndex(String id) throws ProjectExeption {
