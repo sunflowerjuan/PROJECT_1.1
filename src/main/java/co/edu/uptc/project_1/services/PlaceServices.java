@@ -5,6 +5,7 @@ import java.util.List;
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
 import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Place;
+import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.services.myList.SimpleList;
 
 public class PlaceServices {
@@ -40,8 +41,7 @@ public class PlaceServices {
             throw new ProjectExeption(TypeMessage.NOT_FOUND);
         }
         try {
-            deletePlaces(id);
-            add(newPlace);
+            placesList.set(getIndex(id), newPlace);
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
         }
@@ -58,6 +58,22 @@ public class PlaceServices {
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.NOT_FOUND_FILE);
         }
-        return null;
+        throw new ProjectExeption(TypeMessage.NOT_FOUND);
+    }
+
+    public int getIndex(String id) throws ProjectExeption {
+        int pos = 0;
+        try {
+            for (Place place : placesList) {
+                if (place.getId().equals(id)) {
+                    return pos;
+                }
+                pos++;
+            }
+
+        } catch (Exception e) {
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
+        }
+        return -1;
     }
 }

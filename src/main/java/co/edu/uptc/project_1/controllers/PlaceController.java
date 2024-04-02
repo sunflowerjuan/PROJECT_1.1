@@ -2,10 +2,10 @@ package co.edu.uptc.project_1.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.uptc.project_1.dtos.SubjectDto;
+import co.edu.uptc.project_1.dtos.PlaceDTO;
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
-import co.edu.uptc.project_1.model.Subject;
-import co.edu.uptc.project_1.services.SubjectService;
+import co.edu.uptc.project_1.model.Place;
+import co.edu.uptc.project_1.services.PlaceServices;
 
 import java.util.List;
 
@@ -18,32 +18,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/subject")
-public class SubjectController {
+@RequestMapping("/place")
 
-    private SubjectService service;
+public class PlaceController {
 
-    public SubjectController() {
-        service = new SubjectService();
+    private PlaceServices services;
+
+    public PlaceController() {
+        services = new PlaceServices();
         test();
     }
 
-    private void test() {
+    public void test() {
         try {
-            service.add(new Subject("1", "BILLAR"));
-            service.add(new Subject("2", "BESOGTERAPIA"));
-            service.add(new Subject("3", "PROGRAMACION"));
+            services.add(new Place("1", "Mayorca", "uptc"));
+            services.add(new Place("2", "Barcelona", "uptc"));
         } catch (ProjectExeption e) {
+
             e.printStackTrace();
         }
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getSubjects() {
-        List<Subject> subjects;
+    public ResponseEntity<Object> getPlaces() {
+        List<Place> places;
         try {
-            subjects = service.getSubjects();
-            return ResponseEntity.status(HttpStatus.OK).body(subjects);
+            places = services.getPlaces();
+            return ResponseEntity.status(HttpStatus.OK).body(places);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp()).body(e.getMenssage());
         }
@@ -51,10 +52,9 @@ public class SubjectController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Object> getSubject(@PathVariable String id) {
-
         try {
-            Subject subject = service.getSubject(id);
-            return ResponseEntity.status(HttpStatus.OK).body(subject);
+            Place place = services.getPlace(id);
+            return ResponseEntity.status(HttpStatus.OK).body(place);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp())
                     .body(e.getMenssage());
@@ -63,23 +63,23 @@ public class SubjectController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> postSubject(@RequestBody SubjectDto subject) {
+    public ResponseEntity<Object> postSubject(@RequestBody PlaceDTO place) {
         try {
-            SubjectDto.validateSubject(subject);
-            service.add(SubjectDto.convertToDto(subject));
-            return ResponseEntity.status(HttpStatus.OK).body(subject);
+            PlaceDTO.validatePlace(place);
+            services.add(PlaceDTO.convertToDto(place));
+            return ResponseEntity.status(HttpStatus.OK).body(place);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp()).body(e.getMenssage());
         }
     }
 
     @GetMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteSubject(@PathVariable String id) {
+    public ResponseEntity<Object> deletePlace(@PathVariable String id) {
 
         try {
-            Subject subject = service.getSubject(id);
-            service.deleteSubject(id);
-            return ResponseEntity.status(HttpStatus.OK).body(subject);
+            Place place = services.getPlace(id);
+            services.deletePlaces(id);
+            return ResponseEntity.status(HttpStatus.OK).body(place);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp())
                     .body(e.getMenssage());
@@ -88,10 +88,10 @@ public class SubjectController {
     }
 
     @PostMapping("/modify/{id}")
-    public ResponseEntity<Object> postModify(@PathVariable String id, @RequestBody SubjectDto subject) {
+    public ResponseEntity<Object> postModify(@PathVariable String id, @RequestBody PlaceDTO place) {
         try {
-            service.modifySubject(id, SubjectDto.convertToDto(subject));
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(subject);
+            services.modifyPlace(id, PlaceDTO.convertToDto(place));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(place);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp()).body(e.getMenssage());
         }
