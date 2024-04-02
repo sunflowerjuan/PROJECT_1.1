@@ -1,6 +1,5 @@
 package co.edu.uptc.project_1.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uptc.project_1.dtos.SubjectDto;
@@ -18,14 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("subject")
 public class SubjectController {
-    SubjectService service = new SubjectService();
 
-    @GetMapping()
+    private SubjectService service;
+
+    public SubjectController() {
+        service = new SubjectService();
+    }
+
+    @GetMapping("/subject")
     public ResponseEntity<Object> getSubjects() {
         List<Subject> subjects;
-
         try {
             subjects = service.getSubjects();
             return ResponseEntity.status(HttpStatus.OK).body(subjects);
@@ -38,6 +40,7 @@ public class SubjectController {
     public ResponseEntity<Object> postSubject(@RequestBody SubjectDto subject) {
         try {
             SubjectDto.validateSubject(subject);
+            SubjectService service = new SubjectService();
             service.add(SubjectDto.convertToDto(subject));
             return ResponseEntity.status(HttpStatus.OK).body(subject);
         } catch (ProjectExeption e) {
