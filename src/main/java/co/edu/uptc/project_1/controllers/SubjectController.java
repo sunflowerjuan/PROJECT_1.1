@@ -15,17 +15,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping("/subject")
 public class SubjectController {
 
     private SubjectService service;
 
     public SubjectController() {
         service = new SubjectService();
+        test();
     }
 
-    @GetMapping("/subject")
+    private void test() {
+        try {
+            service.add(new Subject("1", "BILLAR"));
+            service.add(new Subject("2", "BESOGTERAPIA"));
+            service.add(new Subject("3", "PROGRAMACION"));
+        } catch (ProjectExeption e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping()
     public ResponseEntity<Object> getSubjects() {
         List<Subject> subjects;
         try {
@@ -36,11 +49,15 @@ public class SubjectController {
         }
     }
 
+    @GetMapping("/h")
+    public String getService() {
+        return this.toString();
+    }
+
     @PostMapping()
     public ResponseEntity<Object> postSubject(@RequestBody SubjectDto subject) {
         try {
             SubjectDto.validateSubject(subject);
-            SubjectService service = new SubjectService();
             service.add(SubjectDto.convertToDto(subject));
             return ResponseEntity.status(HttpStatus.OK).body(subject);
         } catch (ProjectExeption e) {

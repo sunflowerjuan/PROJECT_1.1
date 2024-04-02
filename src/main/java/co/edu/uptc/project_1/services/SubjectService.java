@@ -41,8 +41,7 @@ public class SubjectService {
             throw new ProjectExeption(TypeMessage.NOT_FOUND);
         }
         try {
-            deleteSubject(id);
-            add(newSubject);
+            subjectList.set(getIndex(id), newSubject);
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
@@ -60,6 +59,22 @@ public class SubjectService {
             throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
         }
         return null;
+    }
+
+    public int getIndex(String id) throws ProjectExeption {
+        int pos = 0;
+        try {
+            for (Subject subject : subjectList) {
+                if (subject.getId().equals(id)) {
+                    return pos;
+                }
+                pos++;
+            }
+
+        } catch (Exception e) {
+            throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
+        }
+        return -1;
     }
 
 }
