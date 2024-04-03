@@ -130,6 +130,32 @@ public class GroupController {
 
     }
 
+    @GetMapping("/getWith/group/{id}")
+    public ResponseEntity<Object> getSubjectWithGroup(@PathVariable String id) {
+        load();
+        try {
+            List<Subject> subjects = services.subjectWithGroup(subjectService);
+            return ResponseEntity.status(HttpStatus.OK).body(subjects);
+        } catch (ProjectExeption e) {
+            return ResponseEntity.status(e.getMenssage().getCodeHttp())
+                    .body(e.getMenssage());
+        }
+
+    }
+
+    @PostMapping("/getWith/schedule/")
+    public ResponseEntity<Object> getSubjectWithSchedule(@RequestBody Schedule[] schedule) {
+        load();
+        try {
+            List<Subject> subjects = services.subjectWithScheudel(subjectService, schedule);
+            return ResponseEntity.status(HttpStatus.OK).body(subjects);
+        } catch (ProjectExeption e) {
+            return ResponseEntity.status(e.getMenssage().getCodeHttp())
+                    .body(e.getMenssage());
+        }
+
+    }
+
     public void load() {
         if (placeServices == null) {
             placeServices = new PlaceServices();

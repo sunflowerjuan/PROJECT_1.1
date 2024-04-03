@@ -24,4 +24,10 @@ public class Schedule {
         return this.starHour.isBefore(otherEndHour) && endHour.isAfter(otherSchedule.getStarHour());
     }
 
+    public boolean equals(Schedule otherSchedule) {
+        return this.day.equals(otherSchedule.getDay()) &&
+                this.starHour.equals(otherSchedule.getStarHour()) &&
+                this.duration == otherSchedule.getDuration();
+    }
+
 }

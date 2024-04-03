@@ -1,6 +1,8 @@
 package co.edu.uptc.project_1.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,4 +110,38 @@ public class GroupServices {
         }
         return response;
     }
+
+    public List<Subject> subjectWithGroup(SubjectService subjectService) throws ProjectExeption {
+        List<Subject> response = new SimpleList<>();
+        Map<String, Integer> subjectCountMap = new HashMap<>();
+
+        // Contar la cantidad de grupos por materia
+        for (Group group : groupList) {
+            String subjectId = group.getSubjectId();
+            subjectCountMap.put(subjectId, subjectCountMap.getOrDefault(subjectId, 0) + 1);
+        }
+
+        // Agregar a la respuesta las materias que tienen más de un grupo
+        for (Map.Entry<String, Integer> entry : subjectCountMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                Subject subject = subjectService.getSubject(entry.getKey());
+                if (subject != null) {
+                    response.add(subject);
+                }
+            }
+        }
+        return response;
+    }
+
+    public List<Subject> subjectWithScheudel(SubjectService subjectService, Schedule[] schedule)
+            throws ProjectExeption {
+        List<Subject> response = new SimpleList<>();
+        for (Group group : groupList) {
+            if (hasOverlap(group.getSchedule(), schedule)) {
+                response.add(subjectService.getSubject(group.getSubjectId()));
+            }
+        }
+        return response;
+    }
+
 }
