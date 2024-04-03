@@ -3,11 +3,10 @@ package co.edu.uptc.project_1.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uptc.project_1.dtos.GroupDTO;
-import co.edu.uptc.project_1.dtos.PlaceDTO;
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
 import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Group;
-import co.edu.uptc.project_1.model.Place;
+import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.project_1.services.GroupServices;
 import co.edu.uptc.project_1.utils.Schedule;
 
@@ -16,13 +15,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/group")
@@ -37,11 +36,13 @@ public class GroupController {
 
     public void test() {
         Schedule[] schedules = new Schedule[3];
-        schedules[0] = new Schedule(DayOfWeek.MONDAY, LocalTime.of(13, 0), 2);
-        schedules[1] = new Schedule(DayOfWeek.TUESDAY, LocalTime.of(13, 0), 2);
-        schedules[2] = new Schedule(DayOfWeek.WEDNESDAY, LocalTime.of(13, 0), 2);
+
         try {
+            schedules[0] = new Schedule(DayOfWeek.MONDAY, LocalTime.of(13, 0), 2);
+            schedules[1] = new Schedule(DayOfWeek.TUESDAY, LocalTime.of(13, 0), 2);
+            schedules[2] = new Schedule(DayOfWeek.WEDNESDAY, LocalTime.of(13, 0), 2);
             services.add(new Group("1", "1", "1", schedules));
+
         } catch (Exception e) {
 
         }
@@ -105,6 +106,19 @@ public class GroupController {
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp()).body(e.getMenssage());
         }
+    }
+
+    @GetMapping("/getWith/place/{id}")
+    public ResponseEntity<Object> getSubjectWithPlace(@PathVariable String id) {
+
+        try {
+            List<Subject> subjects = services.subjectsWithPlace(id);
+            return ResponseEntity.status(HttpStatus.OK).body(subjects);
+        } catch (ProjectExeption e) {
+            return ResponseEntity.status(e.getMenssage().getCodeHttp())
+                    .body(e.getMenssage());
+        }
+
     }
 
 }

@@ -2,12 +2,14 @@ package co.edu.uptc.project_1.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
 import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.services.myList.SimpleList;
 
-@SuppressWarnings("unchecked")
+@Service
 public class SubjectService {
     private List<Subject> subjectList = new SimpleList<>();
 

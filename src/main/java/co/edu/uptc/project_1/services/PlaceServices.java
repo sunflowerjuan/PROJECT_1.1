@@ -2,12 +2,14 @@ package co.edu.uptc.project_1.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
 import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Place;
-import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.services.myList.SimpleList;
 
+@Service
 public class PlaceServices {
     private List<Place> placesList = new SimpleList<>();
 

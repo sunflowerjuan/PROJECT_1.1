@@ -2,14 +2,25 @@ package co.edu.uptc.project_1.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
 import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Group;
+import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.project_1.utils.Schedule;
 import co.edu.uptc.services.myList.SimpleList;
 
+@Service
 public class GroupServices {
     private List<Group> groupList = new SimpleList<>();
+
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
+    private PlaceServices placeServices;
 
     public void add(Group group) throws ProjectExeption {
         try {
@@ -87,5 +98,19 @@ public class GroupServices {
             }
         }
         return false;
+    }
+
+    public List<Subject> subjectsWithPlace(String placeId) throws ProjectExeption {
+        List<Subject> response = new SimpleList<>();
+        if (placeServices.getPlace(placeId) != null) {
+            for (Group group : groupList) {
+                if (group.getPlaceId().equals(placeId)) {
+                    response.add(subjectService.getSubject(group.getSubjectId()));
+                }
+            }
+        } else {
+            throw new ProjectExeption(TypeMessage.NOT_FOUND);
+        }
+        return response;
     }
 }
