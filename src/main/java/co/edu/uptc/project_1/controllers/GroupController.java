@@ -8,6 +8,8 @@ import co.edu.uptc.project_1.exceptions.TypeMessage;
 import co.edu.uptc.project_1.model.Group;
 import co.edu.uptc.project_1.model.Subject;
 import co.edu.uptc.project_1.services.GroupServices;
+import co.edu.uptc.project_1.services.PlaceServices;
+import co.edu.uptc.project_1.services.SubjectService;
 import co.edu.uptc.project_1.utils.Schedule;
 
 import java.time.DayOfWeek;
@@ -29,9 +31,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class GroupController {
 
     private GroupServices services;
+    @Autowired
+    private PlaceServices placeServices;
+    @Autowired
+    private SubjectService subjectService;
 
-    public GroupController() {
+    public GroupController(SubjectService subjectService, PlaceServices placeServices) {
         services = new GroupServices();
+        this.placeServices = placeServices;
+        this.subjectService = subjectService;
         test();
     }
 
@@ -111,13 +119,23 @@ public class GroupController {
 
     @GetMapping("/getWith/place/{id}")
     public ResponseEntity<Object> getSubjectWithPlace(@PathVariable String id) {
-
+        load();
         try {
-            List<Subject> subjects = services.subjectsWithPlace(id);
+            List<Subject> subjects = services.subjectsWithPlace(id, placeServices, subjectService);
             return ResponseEntity.status(HttpStatus.OK).body(subjects);
         } catch (ProjectExeption e) {
             return ResponseEntity.status(e.getMenssage().getCodeHttp())
                     .body(e.getMenssage());
+        }
+
+    }
+
+    public void load() {
+        if (placeServices == null) {
+            placeServices = new PlaceServices();
+        }
+        if (subjectService == null) {
+            subjectService = new SubjectService();
         }
 
     }

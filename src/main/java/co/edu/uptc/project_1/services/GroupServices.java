@@ -16,12 +16,6 @@ import co.edu.uptc.services.myList.SimpleList;
 public class GroupServices {
     private List<Group> groupList = new SimpleList<>();
 
-    @Autowired
-    private SubjectService subjectService;
-
-    @Autowired
-    private PlaceServices placeServices;
-
     public void add(Group group) throws ProjectExeption {
         try {
             if (verify(group)) {
@@ -100,7 +94,8 @@ public class GroupServices {
         return false;
     }
 
-    public List<Subject> subjectsWithPlace(String placeId) throws ProjectExeption {
+    public List<Subject> subjectsWithPlace(String placeId, PlaceServices placeServices, SubjectService subjectService)
+            throws ProjectExeption {
         List<Subject> response = new SimpleList<>();
         if (placeServices.getPlace(placeId) != null) {
             for (Group group : groupList) {

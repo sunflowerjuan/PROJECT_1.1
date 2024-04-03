@@ -9,6 +9,7 @@ import co.edu.uptc.project_1.services.PlaceServices;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/place")
 
 public class PlaceController {
-
+    @Autowired
     private PlaceServices services;
 
-    public PlaceController() {
-        services = new PlaceServices();
+    public PlaceController(PlaceServices services) {
+        this.services = services;
+        if (services == null) {
+            services = new PlaceServices();
+        }
         test();
     }
 

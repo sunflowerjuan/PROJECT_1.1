@@ -9,6 +9,7 @@ import co.edu.uptc.project_1.services.SubjectService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,11 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RestController
 @RequestMapping("/subject")
 public class SubjectController {
-
+    @Autowired
     private SubjectService service;
 
-    public SubjectController() {
-        service = new SubjectService();
+    public SubjectController(SubjectService subjectService) {
+        service = subjectService;
+        if (service == null) {
+            service = new SubjectService();
+        }
         test();
     }
 
