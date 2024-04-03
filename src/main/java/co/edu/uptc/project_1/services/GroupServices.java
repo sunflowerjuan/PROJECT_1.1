@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uptc.project_1.exceptions.ProjectExeption;
@@ -23,7 +22,7 @@ public class GroupServices {
             if (verify(group)) {
                 groupList.add(group);
             } else {
-                throw new ProjectExeption(TypeMessage.DUPLICATE_GROUP);
+                throw new ProjectExeption(TypeMessage.DUPLICATE);
             }
         } catch (Exception e) {
             throw new ProjectExeption(TypeMessage.ILEGAL_ACTION);
@@ -72,16 +71,16 @@ public class GroupServices {
         return null;
     }
 
-    public boolean verify(Group group) {
-        // Verificar si existe algún grupo con el mismo lugar y horario
+    public boolean verify(Group group) throws ProjectExeption {
+        if (getGroup(group.getId()) != null) {
+            throw new ProjectExeption(TypeMessage.DUPLICATE);
+        }
         for (Group existingGroup : groupList) {
             if (existingGroup.getPlaceId().equals(group.getPlaceId()) &&
                     hasOverlap(existingGroup.getSchedule(), group.getSchedule())) {
-                // Si se encuentra un grupo con el mismo lugar y horario, retorno false
                 return false;
             }
         }
-        // Si no se encuentra ningún grupo con el mismo lugar y horario, retorno true
         return true;
     }
 
@@ -114,14 +113,10 @@ public class GroupServices {
     public List<Subject> subjectWithGroup(SubjectService subjectService) throws ProjectExeption {
         List<Subject> response = new SimpleList<>();
         Map<String, Integer> subjectCountMap = new HashMap<>();
-
-        // Contar la cantidad de grupos por materia
         for (Group group : groupList) {
             String subjectId = group.getSubjectId();
             subjectCountMap.put(subjectId, subjectCountMap.getOrDefault(subjectId, 0) + 1);
         }
-
-        // Agregar a la respuesta las materias que tienen más de un grupo
         for (Map.Entry<String, Integer> entry : subjectCountMap.entrySet()) {
             if (entry.getValue() > 1) {
                 Subject subject = subjectService.getSubject(entry.getKey());

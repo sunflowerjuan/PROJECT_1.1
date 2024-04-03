@@ -9,7 +9,7 @@ public enum TypeMessage {
     NOT_FOUND_FILE(HttpStatus.NOT_FOUND.value(), "Not Found file", 420),
     ILEGAL_ACTION(HttpStatus.BAD_REQUEST.value(), "Ilegal Action", 421),
     SAVE(HttpStatus.OK.value(), "Saved", 210),
-    DUPLICATE_GROUP(HttpStatus.BAD_REQUEST.value(), "Duplicate Group", 210);
+    DUPLICATE(HttpStatus.BAD_REQUEST.value(), "Duplicate Group", 210);
 
     public final String message;
     public final int code;
